@@ -1,5 +1,5 @@
 # API_NASA
-Чтение данных API NASA
+# Чтение данных API NASA
 
 Описание
 Нужно воспользоваться публичным API NASA и скачать ежедневно выгружаемые им изображение или другой контент (например видео). Несмотря на то, что API публичный, доступ к нему предоставляется по ключу, который достаточно просто получить по адресу: https://api.nasa.gov/.
@@ -17,13 +17,15 @@
 
 {
   "copyright": "Bill Peters",
-  "date": "2020-07-17",
-  "explanation": "After local midnight on July 14 comet NEOWISE was still above the horizon for Goldenrod, Alberta, Canada, just north of Calgary, planet Earth. In this snapshot it makes for an awesome night with dancing displays of the northern lights. The long-tailed comet and auroral displays are beautiful apparitions in the north these days. Both show the influence of spaceweather and the wind from the Sun. Skygazers have widely welcomed the visitor from the Oort cloud, though C/2020 F3 (NEOWISE) is in an orbit that is now taking it out of the inner Solar System.  Comet NEOWISE Images: July 16 | July 15 | July 14 | July 13 | July 12 | July 11 | July 10 & earlier",
-  "hdurl": "https://apod.nasa.gov/apod/image/2007/DSC1028_PetersNEOWISEAuroralSpike.jpg",
-  "media_type": "image",
-  "service_version": "v1",
-  "title": "NEOWISE of the North",
-  "url": "https://apod.nasa.gov/apod/image/2007/DSC1028_PetersNEOWISEAuroralSpike_800.jpg"
+    "date": "2020-07-17",
+    "explanation": "After local midnight on July 14 comet NEOWISE was still above the horizon for Goldenrod, Alberta, Canada, just north of Calgary, planet Earth. In this snapshot it makes for an awesome night with dancing displays of the northern lights. The long-tailed comet and auroral displays are beautiful apparitions in the north these days. Both show the influence of spaceweather and the wind from the Sun. Skygazers have widely welcomed the visitor from the Oort cloud, though C/2020 F3 (NEOWISE) is in an orbit that is now taking it out of the inner Solar System.  Comet NEOWISE Images: July 16 | July 15 | July 14 | July 13 | July 12 | July 11 | July 10 & earlier",
+  
+   "hdurl": "https://apod.nasa.gov/apod/image/2007/DSC1028_PetersNEOWISEAuroralSpike.jpg",
+   "media_type": "image",
+   "service_version": "v1",
+   "title": "NEOWISE of the North",
+   "url": "https://apod.nasa.gov/apod/image/2007/DSC1028_PetersNEOWISEAuroralSpike_800.jpg"
+  
 }
 
 Что нужно сделать
@@ -33,37 +35,38 @@
 3. Создать класс ответа и разобрать json-ответ с помощью Jackson или Gson
 4. Найти поле url в ответе и скачать массив byte, который сохранить в файл
 
-Реализация
+# Реализация
 
 Создайте проект maven или gradle и добавьте в pom.xml или gradle.build библиотеку apache httpclient
 
 Пример:
 
-<dependency>
-   <groupId>org.apache.httpcomponents</groupId>
-   <artifactId>httpclient</artifactId>
-   <version>4.5.12</version>
-</dependency>
+         <dependency>
+               <groupId>org.apache.httpcomponents</groupId>
+               <artifactId>httpclient</artifactId>
+               <version>4.5.12</version>
+         </dependency>
 
 Создайте метод в который добавьте и настройте класс CloseableHttpClient например с помощью builder
-CloseableHttpClient httpClient = HttpClientBuilder.create()
-    .setDefaultRequestConfig(RequestConfig.custom()
-        .setConnectTimeout(5000)    // максимальное время ожидание подключения к серверу
-        .setSocketTimeout(30000)    // максимальное время ожидания получения данных
-        .setRedirectsEnabled(false) // возможность следовать редиректу в ответе
-        .build())
-    .build();
+
+         CloseableHttpClient httpClient = HttpClientBuilder.create()
+             .setDefaultRequestConfig(RequestConfig.custom()
+                 .setConnectTimeout(5000)    // максимальное время ожидание подключения к серверу
+                 .setSocketTimeout(30000)    // максимальное время ожидания получения данных
+                 .setRedirectsEnabled(false) // возможность следовать редиректу в ответе
+                 .build())
+             .build();
 
 Добавьте объект запроса HttpGet request = new HttpGet("https://api.nasa.gov/planetary/apod?api_key=ВАШ_КЛЮЧ") и вызовите удаленный сервис CloseableHttpResponse response = httpClient.execute(request);
 Добавьте в pom.xml или gradle.build библиотеку для работы с json
 
 Пример:
 
-<dependency>
-   <groupId>com.fasterxml.jackson.core</groupId>
-   <artifactId>jackson-databind</artifactId>
-   <version>2.11.1</version>
-</dependency>
+         <dependency>
+               <groupId>com.fasterxml.jackson.core</groupId>
+               <artifactId>jackson-databind</artifactId>
+               <version>2.11.1</version>
+         </dependency>
 
 1.  Создайте класс, в который будем преобразовывать json ответ от сервера;
 2.  Преобразуйте json в java-объект;
